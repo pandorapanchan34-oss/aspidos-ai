@@ -2,12 +2,22 @@
   "name": "aspidos-signature",
   "version": "1.0.0",
   "description": "Minimal signature module for Aspidos TruthGate",
-  "main": "index.js",
+  "main": "src/index.js",
   "keywords": [
     "signature",
     "hmac",
     "security",
-    "aspidos"
+    "aspidos",
+    "ai-safety"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "author": "@pandorapanchan34-oss",
+  "homepage": "https://pandorapanchan34-oss.github.io/aspidos-ai/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pandorapanchan34-oss/aspidos-ai"
+  },
+  "engines": {
+    "node": ">=14"
+  }
 }
