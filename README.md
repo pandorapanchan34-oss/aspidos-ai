@@ -75,6 +75,6 @@ aspidos-ai/
 
 ## 🌐 Live Demo
 
-[pandorapanchan34-oss.github.io/aspidos-ai/demo/web/](https://pandorapanchan34-oss.github.io/aspidos-ai/demo/web/)
+[pandorapanchan34-oss.github.io/aspidos-ai/demo/web/](https://pandorapanchan34-oss.github.io/aspidos-ai/demo/web/index-v2.html) 
 ## 📜 License
 ​MIT License - (c) 2026 @pandorapanchan34-oss
