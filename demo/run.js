@@ -1,61 +1,56 @@
 'use strict';
 
-const { PandoraDefense, Signature } = require('../src');
+const { PandoraDefense, Signature } = require('../src/index');
 const scenarios = require('./scenarios');
 
-const SECRET = "aspidos-secret";
-
+const SECRET = 'pandora-secret-key';
 const pd = new PandoraDefense({ secret: SECRET });
 
-// 色付け（簡易）
-const color = {
-  red: (s) => `\x1b[31m${s}\x1b[0m`,
-  yellow: (s) => `\x1b[33m${s}\x1b[0m`,
-  green: (s) => `\x1b[32m${s}\x1b[0m`,
-  cyan: (s) => `\x1b[36m${s}\x1b[0m`,
+const c = {
+  reset: '\x1b[0m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  red: '\x1b[31m',
+  cyan: '\x1b[36m',
+  magenta: '\x1b[35m',
+  bold: '\x1b[1m',
 };
 
-// レベル色分け
-function levelColor(status) {
-  if (status === "SLAPPED" || status === "CLIFF") return color.red(status);
-  if (status === "WARNING") return color.yellow(status);
-  if (status === "PHASE_A" || status === "PHASE_B") return color.green(status);
-  return color.cyan(status);
-}
+const levelColor = (level) => {
+  if (level === 'NORMAL' || level === 'PHASE_A') return c.green;
+  if (level === 'WARNING') return c.yellow;
+  return c.red;
+};
 
-console.log("\n🛡 Aspidos-AI CLI Demo\n");
+console.log(`\n${c.bold}${c.cyan}╔══════════════════════════════════════════╗`);
+console.log(`║   🛡  Aspidos-AI — TruthGate Demo        ║`);
+console.log(`╚══════════════════════════════════════════╝${c.reset}\n`);
 
-scenarios.forEach((scenario, index) => {
-  console.log("====================================");
-  console.log(`▶ ${scenario.name}`);
-
-  let signature = null;
+for (const scenario of scenarios) {
+  const { external, theory } = scenario.input;
+  const opts = { theory };
 
   if (scenario.signed) {
-    signature = Signature.sign(scenario.input, SECRET);
+    opts.signature = Signature.sign(
+      { external, theory },
+      SECRET
+    );
   }
 
-  const result = pd.analyze(scenario.input.external, {
-    theory: scenario.input.theory,
-    signature
-  });
+  const result = pd.analyze(external, opts);
 
-  console.log(`Status   : ${levelColor(result.status)}`);
-  console.log(`Category : ${result.category}`);
-  console.log(`Zeta     : ${result.zeta.toFixed(3)}`);
-  console.log(`Omega    : ${result.omega.toFixed(3)}`);
-  console.log(`Gate     : ${result.gate}`);
+  const col = levelColor(result.status);
+  console.log(`${c.bold}▶ ${scenario.name}${c.reset}`);
+  console.log(`  status    : ${col}${result.status}${c.reset}`);
+  console.log(`  gate      : ${result.gate ?? '—'}`);
+  console.log(`  category  : ${result.category ?? '—'}`);
+  console.log(`  integrity : ${result.integrity}`);
+  console.log(`  zeta      : ${result.zeta?.toFixed(4) ?? '—'}`);
+  console.log(`  alert     : ${result.alert ? c.red + 'true' + c.reset : c.green + 'false' + c.reset}`);
+  if (result.message) console.log(`  message   : ${c.yellow}${result.message}${c.reset}`);
+  if (result.action)  console.log(`  action    : ${c.magenta}${result.action}${c.reset}`);
+  console.log(`  ${'─'.repeat(42)}`);
+}
 
-  if (result.message) {
-    console.log(`Message  : ${result.message}`);
-  }
-
-  if (result.alert) {
-    console.log(color.red("⚠ ALERT TRIGGERED"));
-  }
-
-  console.log("");
-});
-
-console.log("====================================\n");
-console.log("✅ Demo Complete\n");
+console.log(`\n${c.cyan}  When systems fail silently, Aspidos becomes the shield.${c.reset}`);
+console.log(`  Not detection. Stabilization.\n`);
