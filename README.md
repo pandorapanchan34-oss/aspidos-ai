@@ -43,5 +43,38 @@ console.log(pd.analyze(0.9, {
  ## ⚠️ Disclaimer
 ​本システムは実験的レイヤーです。署名後の「揺らぎ（ハルシネーション）」は情報の真偽を保証しません。これは「夢物語（Hello World）」の断片です。
 ​
+## 📁 Architecture
+
+```
+aspidos-ai/
+├── src/
+│   ├── core/
+│   │   ├── constants.js     ← Pandora定数
+│   │   └── PandoraCore.js   ← 異常検知エンジン
+│   ├── gate/
+│   │   └── TruthGate.js     ← 署名ゲート
+│   ├── security/
+│   │   └── signature.js     ← HMAC-SHA256
+│   ├── engine/
+│   │   └── PandoraDefense.js
+│   └── index.js
+└── demo/
+    ├── run.js               ← CLI demo
+    ├── scenarios.js
+    └── web/
+        └── index.html       ← Interactive demo
+```
+
+## 🔬 Gate States
+
+| Gate | Status | Meaning |
+|------|--------|---------|
+| OPEN | PHASE_A/B | Safe zone, pass through |
+| CLOSED | SIGNATURE_REQUIRED | Lethal risk, signature needed |
+| VERIFIED | ALLOW_WITH_TRACE | Authorized high-risk access |
+
+## 🌐 Live Demo
+
+[pandorapanchan34-oss.github.io/aspidos-ai](https://pandorapanchan34-oss.github.io/aspidos-ai/)
 ## 📜 License
 ​MIT License - (c) 2026 @pandorapanchan34-oss
