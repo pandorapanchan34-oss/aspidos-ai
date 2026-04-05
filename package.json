@@ -1,0 +1,13 @@
+{
+  "name": "aspidos-signature",
+  "version": "1.0.0",
+  "description": "Minimal signature module for Aspidos TruthGate",
+  "main": "index.js",
+  "keywords": [
+    "signature",
+    "hmac",
+    "security",
+    "aspidos"
+  ],
+  "license": "MIT"
+}
