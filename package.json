@@ -1,6 +1,6 @@
 {
   "name": "aspidos-ai",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Minimal signature module for Aspidos TruthGate",
   "main": "src/index.js",
   "keywords": [
