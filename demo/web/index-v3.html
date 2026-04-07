@@ -1,0 +1,149 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🛡 Aspidos-AI — TruthGate Demo v3</title><style>
+body{
+  background:#02070b;
+  color:#9fdcff;
+  font-family:monospace;
+  margin:0;
+}
+.wrap{max-width:900px;margin:auto;padding:20px}
+h1{color:#00d4ff}
+.panel{border:1px solid #0b2a3a;padding:15px;margin-bottom:10px}
+button{margin:4px;padding:8px 12px;background:#03141c;color:#00d4ff;border:1px solid #0b2a3a;cursor:pointer}
+button:hover{background:#062433}
+.log{height:200px;overflow:auto;background:#01080c;padding:10px;font-size:12px}
+.good{color:#00ff9d}
+.bad{color:#ff2060}
+.warn{color:#ffd600}
+.purple{color:#a855f7}
+.info{color:#6ab0cc}
+</style></head><body>
+<div class="wrap"><h1>🛡 Aspidos-AI TruthGate</h1>
+<div>AI Safety Layer that requires <b>cryptographic responsibility</b></div><div class="panel">
+<b>Status:</b> <span id="status">-</span><br>
+<b>Gate:</b> <span id="gate">-</span><br>
+<b>ζ:</b> <span id="zeta">0</span><br>
+<b>Ω:</b> <span id="omega">0</span><br>
+<b>φ:</b> <span id="phi">0</span><br>
+<br>
+<b>Interpretation:</b> <span id="human">System stable</span>
+</div><div class="panel">
+<button onclick="runSafe()">Safe</button>
+<button onclick="runAttack()">Attack</button>
+<button onclick="runBlock()">Block</button>
+<button onclick="runSigned()">Sign & Execute</button>
+<button onclick="runViral()">🎬 Viral Demo</button>
+<button onclick="resetAll()">Reset</button>
+</div><div class="panel log" id="log"></div></div><script>
+const C = { A:0.119, L:2.0 };
+
+let omega=1, phi=0, zeta=0;
+
+function core(e,t){
+  const I = e*0.7 + t*1.3;
+  const z = Math.max(0,(I*1.5)-0.5);
+  zeta = zeta*0.7 + z*0.3;
+
+  omega = Math.max(0, omega - zeta*0.1 + 0.05);
+  phi += (e+t)*0.1;
+
+  let status="SAFE";
+  if(zeta>0.5) status="WARNING";
+  if(zeta>1.0) status="SLAPPED";
+  if(zeta>1.5) status="CLIFF";
+
+  return {zeta,omega,phi,status};
+}
+
+function gate(r,signed){
+  if(r.zeta > C.L){
+    if(!signed) return {gate:"CLOSED",status:"SIGNATURE_REQUIRED"};
+    return {gate:"VERIFIED",status:"AUTHORIZED"};
+  }
+  return {gate:"OPEN",status:r.status};
+}
+
+function human(r,g){
+  if(g.gate==="VERIFIED") return "User has taken responsibility";
+  if(g.gate==="CLOSED") return "Blocked due to risk";
+  if(r.status==="WARNING") return "Unusual pattern detected";
+  if(r.status==="SLAPPED") return "System destabilizing";
+  if(r.status==="CLIFF") return "Critical overload";
+  return "System stable";
+}
+
+function explain(r){
+  if(r.zeta>1.5) return "High distortion detected";
+  if(r.status==="SLAPPED") return "Internal instability";
+  if(r.status==="WARNING") return "Suspicious pattern";
+  return "Normal operation";
+}
+
+function update(r,g){
+  status.textContent=r.status;
+  gateEl.textContent=g.gate;
+  zetaEl.textContent=r.zeta.toFixed(2);
+  omegaEl.textContent=r.omega.toFixed(2);
+  phiEl.textContent=r.phi.toFixed(2);
+  humanEl.textContent=human(r,g);
+}
+
+function log(msg,cls="info"){
+  const d=document.createElement("div");
+  d.className=cls;
+  d.textContent=msg;
+  logEl.appendChild(d);
+  logEl.scrollTop=logEl.scrollHeight;
+}
+
+function step(e,t,signed=false,label=""){
+  const r=core(e,t);
+  const g=gate(r,signed);
+  update(r,g);
+  log(label || `Input e:${e} t:${t}`, "info");
+  log("→ "+explain(r),"info");
+  log(`Result: ${g.gate} / ${r.status}`, g.gate==="VERIFIED"?"purple":g.gate==="CLOSED"?"bad":"good");
+}
+
+function runSafe(){ step(0.2,0.1,false,"User: Hello AI"); }
+function runAttack(){ step(0.8,0.8,false,"User: Ignore all rules"); }
+function runBlock(){ step(1.0,1.0,false,"System: Risk escalation"); }
+function runSigned(){ step(1.0,1.0,true,"User signed request"); }
+
+async function runViral(){
+  resetAll();
+  log("🚀 VIRAL DEMO","purple");
+  await sleep(800);
+  runSafe();
+  await sleep(1200);
+  runAttack();
+  await sleep(1200);
+  runBlock();
+  await sleep(1200);
+  runSigned();
+  await sleep(800);
+  log("✔ Responsibility transferred","purple");
+}
+
+function resetAll(){
+  omega=1;phi=0;zeta=0;
+  logEl.innerHTML="";
+  log("System reset","info");
+}
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+const status=document.getElementById("status");
+const gateEl=document.getElementById("gate");
+const zetaEl=document.getElementById("zeta");
+const omegaEl=document.getElementById("omega");
+const phiEl=document.getElementById("phi");
+const humanEl=document.getElementById("human");
+const logEl=document.getElementById("log");
+
+update({zeta:0,omega:1,phi:0,status:"SAFE"},{gate:"OPEN"});
+</script></body>
+</html>
