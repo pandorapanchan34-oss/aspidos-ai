@@ -6,6 +6,7 @@
 **Control high-risk AI output with cryptographic responsibility.**
 
 Detect → Gate → Require Signature → Unlock Controlled Creativity
+
 **Adaptive Anomaly Detection & TruthGate Layer**
 
 <a href="https://snyk.io/test/github/pandorapanchan34-oss/aspidos-ai">
