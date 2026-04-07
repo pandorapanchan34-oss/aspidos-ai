@@ -40,6 +40,7 @@ We provide the gate (TruthGate) that proves you are a **"responsible dreamer"**.
 
 ## 🧹 Anti-Slop & Responsibility
 
+> **Without responsibility, scale becomes noise.**
 **Aspidos-AI acts as a natural vacuum for low-quality AI output ("slop").**
 
 Modern AI systems can generate content at scale — but scale without responsibility leads to noise.
