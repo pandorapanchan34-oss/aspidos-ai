@@ -201,3 +201,6 @@ This is a fragment of a "dream narrative (Hello World)".
 ## 📜 License
 
 MIT License - (c) 2026 @pandorapanchan34-oss
+## ⭐ Support
+
+If this project resonates with you, consider giving it a star.
