@@ -189,7 +189,9 @@ aspidos-ai/
 
 ## ⚠️ Disclaimer
 
-本システムは実験的レイヤーです。署名後の「揺らぎ（ハルシネーション）」は情報の真偽を保証しません。これは「夢物語（Hello World）」の断片です。
+This system is an experimental layer.
+A signature does not guarantee the truth of the output — the "fluctuation (hallucination)" remains.
+This is a fragment of a "dream narrative (Hello World)".
 
 ## 📜 License
 
