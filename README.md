@@ -56,10 +56,10 @@ By requiring a **session-bound signature**, the system ensures that:
 This is not censorship.  
 It is **accountability by design**.
 
-> We do not block creativity.  
-> We make responsibility visible.
-> In VERIFIED state.**responsibility is cryptographically transferred to the user.**
-> 
+> We do not block creativity.<br>
+> We make responsibility visible.<br>
+> In VERIFIED state, **responsibility is transferred to the user.**
+
 
 ## 🎥 Live Demo
 
