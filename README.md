@@ -58,7 +58,7 @@ It is **accountability by design**.
 
 > We do not block creativity.  
 > We make responsibility visible.
-> In VERIFIED state, **responsibility is cryptographically transferred to the user.**
+- In VERIFIED state, **responsibility is cryptographically transferred to the user.**
 ## 🎥 Live Demo
 
 👉 https://pandorapanchan34-oss.github.io/aspidos-ai/demo/web/index-v3.html
