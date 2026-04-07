@@ -170,7 +170,7 @@ aspidos-ai/
 
 ## 🌐 Live Demo
 
-[pandorapanchan34-oss.github.io/aspidos-ai/demo/web/](https://pandorapanchan34-oss.github.io/aspidos-ai/demo/web/index-v2.html)
+[pandorapanchan34-oss.github.io/aspidos-ai/demo/web/](https://pandorapanchan34-oss.github.io/aspidos-ai/demo/web/index-v3.html)
 
 ## ⚠️ Disclaimer
 
