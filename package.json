@@ -1,6 +1,6 @@
 {
   "name": "aspidos-ai",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Aspidos AI TruthGate Layer",
   "main": "src/index.js",
   "keywords": [
