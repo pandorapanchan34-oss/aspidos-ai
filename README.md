@@ -14,19 +14,6 @@
 <img src="https://img.shields.io/github/license/pandorapanchan34-oss/aspidos-ai" alt="License">
 </p>
 
-**Adaptive Anomaly Detection & TruthGate Layer**
-
-[
-
-![Known Vulnerabilities](https://snyk.io/test/github/pandorapanchan34-oss/aspidos-ai/badge.svg)
-
-](https://snyk.io/test/github/pandorapanchan34-oss/aspidos-ai)
-
-
-![License](https://img.shields.io/github/license/pandorapanchan34-oss/aspidos-ai)
-
-
-</p>
 
 ## 🛡️ Concept: TruthGate Layer
 
