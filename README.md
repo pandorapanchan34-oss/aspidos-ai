@@ -59,6 +59,7 @@ It is **accountability by design**.
 > We do not block creativity.  
 > We make responsibility visible.
 > In VERIFIED state.**responsibility is cryptographically transferred to the user.**
+> 
 
 ## 🎥 Live Demo
 
