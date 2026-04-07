@@ -158,7 +158,8 @@ aspidos-ai/
 │   ├── security/
 │   │   └── signature.js
 │   ├── engine/
-│   │   └── PandoraDefense.js
+│   │   ├── PandoraDefense.js
+│   │   └── 
 │   └── index.js         ← AspidosAI main class
 └── demo/
     ├── run.js
