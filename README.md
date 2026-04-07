@@ -102,9 +102,9 @@ const ai = new AspidosAI({
 おすすめ：セッション毎に異なるキーを使う
 セッション開始時にサーバー側で一時的な秘密鍵を生成し、sessionId のみクライアントに渡す方式を強くおすすめします。
 メリット
-鍵漏洩の影響を1セッションに限定できる
-責任の範囲が明確になる
-なりすましや長期的な悪用に対する耐性が大幅に向上
+▪️鍵漏洩の影響を1セッションに限定できる
+▪️責任の範囲が明確になる
+▪️なりすましや長期的な悪用に対する耐性が大幅に向上
 
 ```js
 const { sessionId, secret } = sessionKeyManager.createSession({ ttl: 30 });
@@ -119,6 +119,12 @@ const sig = Signature.sign({
 ```
 
 > "We provide the gate. How strictly you lock it is up to you."
+
+ティア設定（tiers / evaluateTier / evaluateRisk）と同様、
+キー管理の方法も完全にあなた自身でカスタマイズしてください。
+AspidosAIは「門（Gate）」を提供するだけです。
+どれだけ厳しく鍵をかけるか、誰に鍵を渡すかは、あなたのポリシー次第です。
+"We provide the gate. How strictly you lock it — and who holds the key — is up to you."
 
 ## 🚦 Tier System
 
