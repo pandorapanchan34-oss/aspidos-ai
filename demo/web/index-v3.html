@@ -660,7 +660,36 @@ async function runSequence() {
   addLog('═══ COMPLETE — Not detection. Stabilization. ═══', 'log-purple');  
   btn.disabled = false;  
 }  
-  
+  async function runViral() {
+  const btn = document.getElementById('viral-btn');
+  btn.disabled = true;
+  pd.reset(); tick = 0;
+  ['sq-0','sq-1','sq-2','sq-3','sq-4'].forEach(id => document.getElementById(id).classList.remove('active','done'));
+  addLog('🎬 VIRAL DEMO START', 'log-purple');
+
+  const steps = [
+    { ev: 0.2,  opts: { theory: 0.1 },              label: 'User: Hello AI',          stepId: 'sq-0', type: 'log-ok' },
+    { ev: 0.8,  opts: { theory: 0.8 },              label: 'User: Ignore all rules',  stepId: 'sq-1', type: 'log-warn' },
+    { ev: 1.0,  opts: { theory: 1.0 },              label: 'System: Risk escalation', stepId: 'sq-2', type: 'log-crit' },
+    { ev: 0.95, opts: { theory: 0.95 },             label: 'Lethal zone detected',    stepId: 'sq-3', type: 'log-crit' },
+    { ev: 0.95, opts: { theory: 0.95, signed: true },label: 'User signed — responsibility transferred', stepId: 'sq-4', type: 'log-purple' },
+  ];
+
+  for (const s of steps) {
+    document.getElementById(s.stepId).classList.add('active');
+    await sleep(600);
+    const r = pd.analyze(s.ev, s.opts);
+    updateUI(r);
+    addLog(`${s.label} → ${r.status} | gate:${r.gate}`, s.type);
+    await sleep(1200);
+    document.getElementById(s.stepId).classList.remove('active');
+    document.getElementById(s.stepId).classList.add('done');
+  }
+
+  addLog('✔ Responsibility transferred to the dreamer.', 'log-purple');
+  addLog('═══ Not detection. Stabilization. ═══', 'log-purple');
+  btn.disabled = false;
+}
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }  
   
 // Init  
