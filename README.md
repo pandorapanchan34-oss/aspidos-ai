@@ -27,7 +27,9 @@ Aspidos-AI is a security layer built on Pandora Theory that controls the "lethal
 
 ## 🌙 On AI Dreams (Hallucination & Creativity)
 
-> **"We do not silence the AI's dreams. We only ensure that the dreamer is identified."**
+> **Without responsibility, scale becomes noise.**
+
+**Aspidos-AI acts as a natural vacuum for low-quality AI output ("slop").**
 
 Aspidos-AI does not treat AI hallucinations (creative fluctuations) as errors to be eliminated.
 What existing guardrails call "lies" are, in Pandora Theory, **"digital imagination (dreams)"** — pathways toward truth.
