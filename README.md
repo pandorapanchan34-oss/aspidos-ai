@@ -87,6 +87,37 @@ const ai = new AspidosAI({
   policyName: 'MY_COMPANY_POLICY',
 });
 ```
+## 🔑 Signature & Key Management
+
+AspidosAI uses HMAC-based digital signatures for Tier 2 (SIGNATURE_REQUIRED) operations.  
+By default, a **fixed secret key** is used (passed via `secret` option or `ASPIDOS_SECRET` environment variable).
+
+```js
+const ai = new AspidosAI({
+  secret: 'your-secret',   // or process.env.ASPIDOS_SECRET
+});
+重要: 固定キーはシンプルですが、本番運用や高い責任を伴う用途ではセキュリティリスクがあります。
+Recommended Approach for Stronger Security
+セッション毎に異なるキーを発行することを強くおすすめします。
+セッション開始時にサーバー側で一時的な秘密鍵を生成し、sessionIdだけをクライアントに渡す形にすると：
+鍵の漏洩影響を1セッションに限定できる
+責任の範囲が明確になる
+なりすましや長期的な悪用に対する耐性が大幅に向上する
+例（拡張実装イメージ）:
+// セッションキー管理（自分で追加推奨）
+const { sessionId, secret } = sessionKeyManager.createSession({ ttl: 30 }); // 分単位
+
+// 署名時は sessionId を payload に含めて検証
+const sig = Signature.sign({
+  eventValue,
+  theory,
+  timestamp: Date.now(),
+  nonce: crypto.randomUUID(),
+  sessionId
+}, secret);
+ティア設定（tiers / evaluateTier / evaluateRisk）と同様、キー管理方法も完全にユーザー側でカスタマイズ可能です。
+自分のポリシーや運用リスクに合わせて、固定キー・セッションキー・公開鍵方式など自由に拡張してください。
+「We provide the gate. How strictly you lock it is up to you.」
 
 ## 🚦 Tier System
 
