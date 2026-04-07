@@ -68,6 +68,7 @@ It is **accountability by design**.
 ## 🎥 Live Demo
 
 > Interactive demo — no setup required
+> 
 👉 https://pandorapanchan34-oss.github.io/aspidos-ai/demo/web/index-v3.html
 
 > Try the full sequence: SAFE → LETHAL → VERIFIED
