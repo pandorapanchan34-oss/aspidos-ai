@@ -63,7 +63,7 @@ It is **accountability by design**.
 > We do not block creativity.<br>
 > We make responsibility visible.<br>
 > In VERIFIED state, **responsibility is transferred to the user.**
-
+> We provide the gate. You decide what passes.
 
 ## 🎥 Live Demo
  
