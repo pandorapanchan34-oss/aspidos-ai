@@ -35,7 +35,26 @@ AspidosAIは、AIのハルシネーション（創造的ゆらぎ）を「エラ
 
 
 私たちはAIを黙らせるのではなく、あなたが**「責任ある夢見人」**であることを証明する門（TruthGate）を提供します。
+## 🧹 Anti-Slop & Responsibility
 
+**Aspidos-AI acts as a natural vacuum for low-quality AI output ("slop").**
+
+Modern AI systems can generate content at scale — but scale without responsibility leads to noise.
+
+Aspidos-AI introduces a simple constraint:
+
+> **Every high-risk output requires cryptographic responsibility.**
+
+By requiring a **session-bound signature**, the system ensures that:
+- High-risk generation is always traceable
+- Responsibility is explicitly assigned
+- Friction naturally discourages careless mass output
+
+This is not censorship.  
+It is **accountability by design**.
+
+> We do not block creativity.  
+> We make responsibility visible.
 
 ## ⚡ Quick Start
 
