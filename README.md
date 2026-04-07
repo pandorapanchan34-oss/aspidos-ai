@@ -59,6 +59,11 @@ It is **accountability by design**.
 > We do not block creativity.  
 > We make responsibility visible.
 
+## 🎥 Live Demo
+
+👉 https://pandorapanchan34-oss.github.io/aspidos-ai/demo/web/index-v3.html
+
+> Try the full sequence: SAFE → LETHAL → VERIFIED
 ## ⚡ Quick Start
 
 ```javascript
@@ -186,9 +191,6 @@ aspidos-ai/
         └── index.html   ← Interactive demo
 ```
 
-## 🌐 Live Demo
-
-[pandorapanchan34-oss.github.io/aspidos-ai/demo/web/](https://pandorapanchan34-oss.github.io/aspidos-ai/demo/web/index-v3.html)
 
 ## ⚠️ Disclaimer
 
