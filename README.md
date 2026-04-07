@@ -159,7 +159,7 @@ aspidos-ai/
 │   │   └── signature.js
 │   ├── engine/
 │   │   ├── PandoraDefense.js
-│   │   └── 
+│   │   └── fluctuationDetector.js
 │   └── index.js         ← AspidosAI main class
 └── demo/
     ├── run.js
