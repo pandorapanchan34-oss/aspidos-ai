@@ -5,16 +5,11 @@
 
 **Adaptive Anomaly Detection & TruthGate Layer**
 
-[
-
-![Known Vulnerabilities](https://snyk.io/test/github/pandorapanchan34-oss/aspidos-ai/badge.svg)
-
-](https://snyk.io/test/github/pandorapanchan34-oss/aspidos-ai)
-
-
-![License](https://img.shields.io/github/license/pandorapanchan34-oss/aspidos-ai)
-
-
+<a href="https://snyk.io/test/github/pandorapanchan34-oss/aspidos-ai">
+<img src="https://snyk.io/test/github/pandorapanchan34-oss/aspidos-ai/badge.svg" alt="Known Vulnerabilities">
+</a>
+<img src="https://img.shields.io/github/v/release/pandorapanchan34-oss/aspidos-ai?label=version" alt="Release">
+<img src="https://img.shields.io/github/license/pandorapanchan34-oss/aspidos-ai" alt="License">
 </p>
 
 ## 🛡️ Concept: TruthGate Layer
