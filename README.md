@@ -197,15 +197,26 @@ aspidos-ai/
 ```
 
 
+
+---
+
 ## ⚠️ Disclaimer
 
 This system is an experimental layer.
 A signature does not guarantee the truth of the output — the "fluctuation (hallucination)" remains.
-This is a fragment of a "dream narrative (Hello World)".
+
+This system does not eliminate uncertainty.  
+It makes responsibility explicit.
 
 ## 📜 License
 
 MIT License - (c) 2026 @pandorapanchan34-oss
+
 ## ⭐ Support
 
 If this project resonates with you, consider giving it a star.
+
+---
+
+*This project is a fragment of Pandora Theory.*  
+*Follow the fragments.*
