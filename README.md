@@ -218,5 +218,19 @@ If this project resonates with you, consider giving it a star.
 
 ---
 
-*This project is a fragment of Pandora Theory.*  
-*Follow the fragments.*
+<h2 align="center">
+  <i>This is a fragment of Pandora Theory (Pandora Panchan, 2026).</i>
+</h2>
+
+<p align="center">
+  <strong>Take it if you want.</strong><br>
+  <strong>Build on it if you can.</strong>
+</p>
+
+<p align="center">
+  <em>The rest is up to you.</em><br>
+  <strong>Follow the fragments. 🗺️</strong>
+</p>
+
+<hr>
+
