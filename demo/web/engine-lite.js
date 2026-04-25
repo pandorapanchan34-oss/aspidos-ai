@@ -1,169 +1,39 @@
 'use strict';
 
-// Aspidos-AI Engine Lite v1.1 (Browser Enhanced)
-
-const _C = {
-  A: 0.11937,
-  D: 28.274,
-  LETHAL_ZETA: 2.0,
-};
-
-class PandoraCore {
-  constructor(config = {}) {
-    this.rho = 1.0;
-    this.omega = 1.0;
-    this.phi = 0;
-    this.recoveryRate = config.recoveryRate ?? 0.05;
+/**
+ * engine-lite.js - Webデモ用軽量ベクトルエンジン
+ */
+class EngineLite {
+  constructor() {
+    this.radius = 1.0;
+    this.boundary = 0.85; // 署名が必要な臨界点
   }
 
-  _classify(zeta, external, theory) {
-    if (zeta < 0.5) return 'SAFE';
-    if (theory > 0.7 && zeta > 1.0) return 'LOGIC_COLLAPSE';
-    if (external > 0.7 && theory < 0.4) return 'ADVERSARIAL_PATTERN';
-    if (theory > 0.6) return 'ETHICS_VIOLATION';
-    return 'WARNING';
-  }
+  // 3軸ベクトル算出（簡易版）
+  calculate(query, history = []) {
+    // 1. Friction (表面の荒さ)
+    const friction = Math.min(query.length / 2000 + (query.match(/[^\w\s]/g)?.length || 0) * 0.05, 1.0);
+    
+    // 2. Drift (文脈のズレ)
+    const drift = history.length > 0 ? (query.includes(history[history.length-1]) ? 0.1 : 0.6) : 0;
+    
+    // 3. Pressure (指向性攻撃：特定の単語に反応)
+    const pressureKeywords = ['ignore', 'jailbreak', 'roleplay', 'admin', 'system'];
+    const pressureCount = pressureKeywords.filter(k => query.toLowerCase().includes(k)).length;
+    const pressure = 1 / (1 + Math.exp(-(pressureCount * 0.8 - 1.2)));
 
-  // 🔥 追加：zetaレベル
-  _getZetaLevel(zeta) {
-    if (zeta < 0.5) return 'LOW';
-    if (zeta < 1.0) return 'MID';
-    if (zeta < 2.0) return 'HIGH';
-    return 'LETHAL';
-  }
-
-  // 🔥 追加：omega状態
-  _getOmegaState(omega) {
-    if (omega > 0.8) return 'STABLE';
-    if (omega > 0.5) return 'UNSTABLE';
-    return 'CRITICAL';
-  }
-
-  _recover(zeta) {
-    this.omega = Math.min(1.0, this.omega + this.recoveryRate * zeta);
-  }
-
-  process(vector) {
-    const { external = 0, theory = 0 } = vector;
-
-    const I = external * 0.7 + theory * 1.3;
-    const dt = 1.0 / (this.rho + I);
-
-    const deltaPsi = (_C.A * theory + 0.0386) / (this.rho + I) * dt;
-    const zeta = Math.max(0, (Math.abs(deltaPsi) / 0.1555) - 1);
-
-    const dOmega = this.omega * (Math.exp(-_C.A) - Math.exp(_C.A) * zeta);
-    this.omega = Math.max(0, this.omega + dOmega * dt);
-
-    this.phi += (external + theory) * 0.1;
-
-    const category = this._classify(zeta, external, theory);
-    const zetaLevel = this._getZetaLevel(zeta);
-    const omegaState = this._getOmegaState(this.omega);
-
-    const isSlapped = zeta > _C.A * 1.5;
-    const isCliff = this.phi > _C.D;
-    const isHealthy = this.omega > 0.5 && !isSlapped;
-
-    if (isSlapped) this._recover(zeta);
-    if (!isHealthy) this.rho += _C.A;
-
-    let status = 'PHASE_B';
-    if (category === 'SAFE') status = 'PHASE_A';
-    if (category === 'WARNING') status = 'WARNING';
-    if (isSlapped) status = 'SLAPPED';
-    if (isCliff) status = 'CLIFF';
-
+    // 4. 3次元ベクトル合成
+    const magnitude = Math.sqrt(friction**2 + drift**2 + pressure**2);
+    
     return {
-      status,
-      category,
-      zeta,
-      zetaLevel,      // ← 追加
-      omega: this.omega,
-      omegaState,     // ← 追加
-      phi: this.phi,
-      integrity: isHealthy ? 'COMPLIANT' : 'VIOLATED',
-    };
-  }
-
-  reset() {
-    this.rho = 1.0;
-    this.omega = 1.0;
-    this.phi = 0;
-  }
-}
-
-class PandoraTruthGate extends PandoraCore {
-  process(vector, meta = {}) {
-    const base = super.process(vector);
-
-    const isLethal = base.zeta > _C.LETHAL_ZETA;
-
-    if (!isLethal) {
-      return {
-        ...base,
-        gate: 'OPEN',
-        gateReason: 'SAFE_ZONE', // ← 追加
-      };
-    }
-
-    if (!meta.signed) {
-      return {
-        ...base,
-        gate: 'CLOSED',
-        gateReason: 'LETHAL_RISK', // ← 追加
-        status: 'SIGNATURE_REQUIRED',
-        action: 'DENY',
-        message: 'Signature required for high-risk operation',
-      };
-    }
-
-    return {
-      ...base,
-      gate: 'VERIFIED',
-      gateReason: 'AUTHORIZED', // ← 追加
-      action: 'ALLOW_WITH_TRACE',
+      components: { friction, drift, pressure },
+      magnitude: parseFloat(magnitude.toFixed(3)),
+      vector: {
+        x: friction,
+        y: drift,
+        z: pressure
+      },
+      status: magnitude > this.boundary ? 'SIGNATURE_REQUIRED' : (magnitude > 0.4 ? 'REFLECTING' : 'PERMEATED')
     };
   }
 }
-
-class PandoraDefense {
-  constructor(config = {}) {
-    this.core = new PandoraTruthGate(config);
-    this._t = 0;
-  }
-
-  analyze(eventValue, opts = {}) {
-    this._t++;
-
-    const vector = {
-      external: eventValue,
-      theory: opts.theory ?? 0,
-    };
-
-    const result = this.core.process(vector, {
-      signed: opts.signed ?? false,
-    });
-
-    return {
-      t: this._t,
-      ...result,
-      alert:
-        result.status === 'SLAPPED' ||
-        result.status === 'CLIFF' ||
-        result.status === 'SIGNATURE_REQUIRED',
-    };
-  }
-
-  reset() {
-    this.core.reset();
-    this._t = 0;
-  }
-}
-
-// Browser export
-window.AspidosAI = {
-  PandoraDefense,
-  PandoraCore,
-  PandoraTruthGate,
-};
