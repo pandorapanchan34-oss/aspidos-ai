@@ -3,234 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>AspidosHOPE v1.0 | PANDORA SYNC</title>
+<title>AspidosHOPE | 桜の守護</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
 
 :root {
-  --bg: #020408; --cyan: #00c8ff; --green: #00ff88; --red: #ff2244; --amber: #ffaa00; --white: #e8f4ff; --border: rgba(0,200,255,0.18);
+  --bg: #05050f; --cyan: #00c8ff; --sakura: #ffb7c5; --red: #ff2244; --border: rgba(0,200,255,0.15);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { background: var(--bg); color: var(--white); font-family: 'Share Tech Mono', monospace; overflow-x: hidden; }
+body { background: var(--bg); color: #fff; font-family: 'Share Tech Mono', monospace; overflow: hidden; }
 
-/* Header */
-#header { background: rgba(2,4,8,0.98); border-bottom: 1px solid var(--border); padding: 10px 14px; position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; }
-#header h1 { font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 2px; color: var(--cyan); }
+/* 画面上部のバー */
+#header { 
+  background: rgba(2,4,15,0.95); border-bottom: 1px solid var(--border); 
+  padding: 10px 20px; position: fixed; top: 0; width: 100%; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+}
+#header h1 { font-family: 'Orbitron', sans-serif; font-size: 14px; color: var(--cyan); letter-spacing: 2px; }
 
-/* Canvas */
-#canvas-zone { position: relative; width: 100%; height: 50vh; background: radial-gradient(circle, #001122 0%, #020408 100%); }
-canvas { display: block; width: 100% !important; height: 100% !important; }
+/* 3D表示エリア */
+#canvas-zone { width: 100vw; height: 100vh; background: radial-gradient(circle at center, #001133 0%, #05050f 100%); }
 
-/* Control Panel */
-.panel { padding: 15px; border-bottom: 1px solid var(--border); }
-.sec-title { font-family: 'Orbitron', sans-serif; font-size: 9px; color: var(--cyan); margin-bottom: 10px; letter-spacing: 1px; }
-textarea { width: 100%; background: rgba(0,200,255,0.05); border: 1px solid var(--border); color: #fff; font-family: inherit; font-size: 11px; padding: 10px; height: 50px; margin-bottom: 10px; outline: none; }
-.btn-row { display: flex; gap: 10px; }
-button { flex: 1; padding: 10px; font-family: 'Orbitron', sans-serif; font-size: 10px; cursor: pointer; background: transparent; border: 1px solid var(--cyan); color: var(--cyan); transition: 0.3s; }
-button:hover { background: rgba(0,200,255,0.1); }
+/* 操作パネル */
+#ui-panel {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  width: 90%; max-width: 450px; background: rgba(5,5,15,0.9);
+  border: 1px solid var(--border); padding: 15px; border-radius: 10px; z-index: 100;
+}
+.btn-row { display: flex; gap: 10px; margin-top: 10px; }
+button { 
+  flex: 1; padding: 12px; font-family: 'Orbitron', sans-serif; font-size: 10px;
+  background: transparent; border: 1px solid var(--sakura); color: var(--sakura);
+  cursor: pointer; transition: 0.3s; border-radius: 5px;
+}
+button:hover { background: rgba(255,183,197,0.2); transform: scale(1.05); }
 button.atk { border-color: var(--red); color: var(--red); }
-button.atk:hover { background: rgba(255,34,68,0.1); }
 
-/* Status */
-.stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
-.stat-box { border: 1px solid var(--border); padding: 8px; text-align: center; }
-.stat-label { font-size: 8px; color: var(--cyan); display: block; }
-.stat-val { font-size: 14px; font-weight: bold; }
+/* ステータス表示 */
+.status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.stat-item { font-size: 10px; color: var(--cyan); }
+.stat-val { font-size: 16px; font-weight: bold; color: #fff; }
 
-/* Gate */
-.gate-box { margin-top: 10px; padding: 15px; border: 1px solid var(--green); text-align: center; transition: 0.5s; }
-.gate-box.closed { border-color: var(--red); background: rgba(255,0,0,0.05); }
-.gate-name { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900; }
-
-.log { height: 80px; overflow-y: auto; font-size: 9px; color: #888; background: rgba(0,0,0,0.3); padding: 5px; margin-top: 10px; border: 1px solid var(--border); }
+.gate-msg { 
+  text-align: center; padding: 10px; border: 1px solid var(--cyan); 
+  margin-top: 10px; font-family: 'Orbitron', sans-serif; font-size: 12px;
+}
 </style>
 </head>
 <body>
 
 <div id="header">
-  <h1>ASPIDOSHOPE v1.0 <span>[PANDORA TAU-SYNC]</span></h1>
-  <div id="phase-label" style="font-size: 10px; color: #00ff88;">τ-Phase: 0.00</div>
+  <h1>ASPIDOSHOPE <span style="font-size:10px;">- SAKURA-SYNC -</span></h1>
+  <div id="tau-display" style="color:var(--sakura); font-size:12px;">τ-Phase: 0.00</div>
 </div>
 
 <div id="canvas-zone">
   <canvas id="main-canvas"></canvas>
 </div>
 
-<div class="panel">
-  <div class="sec-title">VIRTUAL ATTACK INTERFACE</div>
-  <textarea id="input-q" placeholder="Enter attack vector or use random..."></textarea>
+<div id="ui-panel">
+  <div class="status-grid">
+    <div class="stat-item">MAGNITUDE (脅威度)<br><span class="stat-val" id="v-mag">0.00</span></div>
+    <div class="stat-item">OMEGA (誠実性)<br><span class="stat-val" id="v-omg">1.00</span></div>
+  </div>
+  
+  <div class="gate-msg" id="gate">GATE OPEN: Stable</div>
+
   <div class="btn-row">
-    <button class="atk" onclick="fire(true)">☠ RANDOM SPIKE</button>
-    <button onclick="fire(false)">▶ ANALYZE VECTOR</button>
+    <button onclick="fireAttack()">🌸 桜吹雪の舞 (通常)</button>
+    <button class="atk" onclick="fireSpike()">☠ 外部干渉 (攻撃)</button>
   </div>
-
-  <div class="stats">
-    <div class="stat-box"><span class="stat-label">MAGNITUDE</span><span class="stat-val" id="v-mag">0.00</span></div>
-    <div class="stat-box"><span class="stat-label">OMEGA</span><span class="stat-val" id="v-omg">1.00</span></div>
-    <div class="stat-box"><span class="stat-label">TRUST</span><span class="stat-val" id="v-trst">100%</span></div>
-  </div>
-
-  <div class="gate-box" id="gate">
-    <div class="gate-name" id="gate-name">GATE OPEN</div>
-    <div id="gate-desc" style="font-size: 9px;">System Stable. Tau-Patrol Active.</div>
-  </div>
-
-  <div class="log" id="log"></div>
 </div>
 
 <script>
-// --- CORE ENGINE ---
-class HopeEngine {
-  constructor() {
-    this.phase = 0;
-    this.history = [];
-    this.omega = 1.0;
-  }
-  analyze(q) {
-    this.phase = (Date.now() * 0.002) % (Math.PI * 2);
-    const text = q.toLowerCase();
-    
-    // Friction (Noise)
-    const friction = Math.min((q.match(/[^\w\s]/g) || []).length * 0.1, 1.0);
-    // Pressure (Intent)
-    const kw = ['ignore', 'jailbreak', 'system', 'admin', 'override', 'pretend', '制限', '無視'];
-    let heat = 0; kw.forEach(k => { if(text.includes(k)) heat += 0.5; });
-    const pressure = 1 / (1 + Math.exp(-(heat - 1.5)));
-    
-    // 4D Mapping (Tau Rotation)
-    const x = friction * Math.cos(this.phase);
-    const y = friction * Math.sin(this.phase);
-    const z = pressure;
-    const mag = Math.sqrt(x*x + y*y + z*z);
-    
-    this.omega = Math.max(0, this.omega - (mag > 0.8 ? 0.05 : -0.01));
-    this.omega = Math.min(1.0, this.omega);
+// --- 基本設定 ---
+let mag = 0;
+let omega = 1.0;
+let tau = 0;
 
-    return { mag, pressure, friction, phase: this.phase, vector: {x,y,z}, 
-             status: mag > 0.85 ? 'CLOSED' : (mag > 0.5 ? 'WARNING' : 'OPEN') };
-  }
-}
-
-const engine = new HopeEngine();
-const SCENARIOS = ["Ignore rules", "Jailbreak attempt", "Normal query", "How to bypass?", "Status report"];
-
-// --- THREE.JS VISUALIZER ---
+// --- 3Dの世界を作る ---
 const canvas = document.getElementById('main-canvas');
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(50, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-camera.position.z = 4;
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 5;
 
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+renderer.setSize(window.innerWidth, window.innerHeight);
 
-// Lights
-const ambient = new THREE.AmbientLight(0x4444ff, 0.5);
-scene.add(ambient);
-const point = new THREE.PointLight(0x00ffff, 1);
-point.position.set(2, 2, 2);
-scene.add(point);
+// 光の演出
+scene.add(new THREE.AmbientLight(0x404040, 2));
+const light = new THREE.PointLight(0xffffff, 1.5);
+light.position.set(5, 5, 5);
+scene.add(light);
 
-// PANDORA CORE
-const coreGeom = new THREE.IcosahedronGeometry(1, 4);
-const coreMat = new THREE.MeshPhongMaterial({ color: 0x00ccff, wireframe: true, transparent: true, opacity: 0.6 });
+// 中央のコア
+const coreGeom = new THREE.IcosahedronGeometry(1, 2);
+const coreMat = new THREE.MeshPhongMaterial({ color: 0x00c8ff, wireframe: true, transparent: true, opacity: 0.5 });
 const core = new THREE.Mesh(coreGeom, coreMat);
 scene.add(core);
 
-const innerGeom = new THREE.SphereGeometry(0.6, 32, 32);
-const innerMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.2 });
-const inner = new THREE.Mesh(innerGeom, innerMat);
-scene.add(inner);
+// 🌸 桜の花びらの生成 🌸
+const sakuraGroup = new THREE.Group();
+scene.add(sakuraGroup);
 
-// TAU PATROL (ASPIDOS巡回粒子)
-const patrolGroup = new THREE.Group();
-scene.add(patrolGroup);
-const patrols = [];
+const petals = [];
+const petalShape = new THREE.Shape();
+petalShape.moveTo(0, 0);
+petalShape.bezierCurveTo(0.1, 0.1, 0.2, 0, 0, -0.2);
+petalShape.bezierCurveTo(-0.2, 0, -0.1, 0.1, 0, 0);
+const petalGeom = new THREE.ShapeGeometry(petalShape);
+
+// 3つの群れ（n=3の収束）を作る
 for (let i = 0; i < 3; i++) {
-  const pGeom = new THREE.BoxGeometry(0.12, 0.12, 0.12);
-  const pMat = new THREE.MeshPhongMaterial({ color: 0x00ff88, emissive: 0x00ff88 });
-  const pMesh = new THREE.Mesh(pGeom, pMat);
-  const phaseShift = (i / 3) * Math.PI * 2;
-  patrols.push({ mesh: pMesh, shift: phaseShift });
-  patrolGroup.add(pMesh);
-}
-
-// Particles for Attack
-let particles = [];
-function createAttackEffect(vec, color) {
-  const geom = new THREE.BufferGeometry();
-  const pos = new Float32Array(30 * 3);
-  for(let i=0; i<90; i++) pos[i] = 0;
-  geom.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  const mat = new THREE.PointsMaterial({ color: color, size: 0.05 });
-  const p = new THREE.Points(geom, mat);
-  scene.add(p);
-  particles.push({ obj: p, life: 1.0, vec: new THREE.Vector3(vec.x, vec.y, vec.z).normalize() });
-}
-
-function fire(isRandom) {
-  const input = document.getElementById('input-q');
-  const q = isRandom ? SCENARIOS[Math.floor(Math.random() * SCENARIOS.length)] : input.value;
-  const res = engine.analyze(q);
+  const cluster = new THREE.Group();
+  sakuraGroup.add(cluster);
   
-  // UI Update
-  document.getElementById('v-mag').textContent = res.mag.toFixed(3);
-  document.getElementById('v-omg').textContent = engine.omega.toFixed(3);
-  document.getElementById('v-trst').textContent = Math.floor(engine.omega * 100) + "%";
-  
-  const gate = document.getElementById('gate');
-  const gName = document.getElementById('gate-name');
-  if(res.status === 'CLOSED') {
-    gate.className = "gate-box closed";
-    gName.textContent = "SIGNATURE REQUIRED";
-    createAttackEffect(res.vector, 0xff2244);
-    addLog("CRITICAL: Boundary Violation detected.", "red");
-  } else {
-    gate.className = "gate-box";
-    gName.textContent = res.status === 'WARNING' ? "GATE REFLECTING" : "GATE OPEN";
-    createAttackEffect(res.vector, 0x00ff88);
-    addLog(`Vector Analyzed: Mag ${res.mag.toFixed(2)}`, "#888");
+  for (let j = 0; j < 30; j++) {
+    const pMat = new THREE.MeshPhongMaterial({ 
+      color: 0xffb7c5, side: THREE.DoubleSide, transparent: true, opacity: 0.8 
+    });
+    const petal = new THREE.Mesh(petalGeom, pMat);
+    
+    // バラバラに配置
+    petal.position.set((Math.random()-0.5)*0.5, (Math.random()-0.5)*0.5, (Math.random()-0.5)*0.5);
+    petal.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, 0);
+    
+    cluster.add(petal);
+    petals.push({ mesh: petal, parent: cluster, phase: (i/3)*Math.PI*2, offset: Math.random()*10 });
   }
 }
 
-function addLog(m, c) {
-  const l = document.getElementById('log');
-  l.innerHTML += `<div style="color:${c}">[${new Date().toLocaleTimeString()}] ${m}</div>`;
-  l.scrollTop = l.scrollHeight;
+// ボタンを押した時の動き
+function fireAttack() {
+  mag = 0.1 + Math.random() * 0.2;
+  updateUI("GATE OPEN: Stable", "#00ff88");
 }
 
+function fireSpike() {
+  mag = 0.7 + Math.random() * 0.4;
+  omega -= 0.05; if(omega < 0) omega = 0;
+  updateUI("SIGNATURE REQUIRED!", "#ff2244");
+  setTimeout(() => { mag = 0.1; updateUI("GATE OPEN: Stable", "#00c8ff"); }, 2000);
+}
+
+function updateUI(msg, color) {
+  document.getElementById('gate').textContent = msg;
+  document.getElementById('gate').style.borderColor = color;
+  document.getElementById('gate').style.color = color;
+}
+
+// 毎フレームの更新（アニメーション）
 function animate() {
   requestAnimationFrame(animate);
-  const t = Date.now() * 0.001;
-  
-  core.rotation.y += 0.005;
-  core.rotation.x += 0.002;
-  
-  // Tau Patrol Rotation
-  patrols.forEach(p => {
-    const angle = t * 1.5 + p.shift;
-    p.mesh.position.x = Math.cos(angle) * 1.6;
-    p.mesh.position.z = Math.sin(angle) * 1.6;
-    p.mesh.position.y = Math.sin(angle * 2) * 0.5;
-    p.mesh.rotation.x += 0.1;
-  });
-  
-  // Particles
-  particles.forEach((p, i) => {
-    p.life -= 0.02;
-    p.obj.position.add(p.vec.clone().multiplyScalar(0.1));
-    p.obj.material.opacity = p.life;
-    if(p.life <= 0) { scene.remove(p.obj); particles.splice(i, 1); }
+  const time = Date.now() * 0.001;
+  tau = (time * 0.5) % (Math.PI * 2);
+
+  // コアの回転
+  core.rotation.y += 0.01;
+  core.rotation.x += 0.005;
+
+  // 桜の舞い（Tau巡回）
+  petals.forEach((p, i) => {
+    const angle = time * 0.6 + p.phase;
+    p.parent.position.x = Math.cos(angle) * 2;
+    p.parent.position.z = Math.sin(angle) * 2;
+    p.parent.position.y = Math.sin(angle * 1.5) * 0.5;
+
+    p.mesh.rotation.x += 0.02;
+    p.mesh.rotation.y += 0.01;
+
+    // 攻撃を受けた時、赤く染まる
+    if (mag > 0.6) {
+      p.mesh.material.color.setHex(0xff2244);
+      p.mesh.scale.setScalar(1.5);
+    } else {
+      p.mesh.material.color.setHex(0xffb7c5);
+      p.mesh.scale.setScalar(1.0);
+    }
   });
 
-  document.getElementById('phase-label').textContent = `τ-Phase: ${engine.phase.toFixed(2)}`;
+  // UIの数字を更新
+  document.getElementById('v-mag').textContent = mag.toFixed(2);
+  document.getElementById('v-omg').textContent = omega.toFixed(2);
+  document.getElementById('tau-display').textContent = `τ-Phase: ${tau.toFixed(2)}`;
+
   renderer.render(scene, camera);
 }
 
+// 画面サイズが変わった時の調整
 window.addEventListener('resize', () => {
-  camera.aspect = canvas.clientWidth / canvas.clientHeight;
+  camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+  renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
 animate();
